@@ -96,7 +96,7 @@
             box-shadow: 0 40px 100px rgba(0,0,0,0.6);
         }
 
-        /* Botões Refatorados */
+        /* Botões com Animação de Seleção */
         .plano-item {
             position: relative;
             background: #121212;
@@ -110,6 +110,7 @@
             justify-content: space-between;
             align-items: center;
             overflow: hidden;
+            transform: scale(1);
         }
 
         .plano-item:hover {
@@ -118,7 +119,25 @@
             transform: translateX(5px);
         }
 
-        /* Indicador Lateral de Cor */
+        .plano-item:active {
+            transform: scale(0.96) translateX(3px);
+            background: #202020;
+        }
+
+        .plano-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .plano-item:active::after {
+            opacity: 1;
+        }
+
         .plano-item::before {
             content: '';
             position: absolute;
@@ -126,36 +145,53 @@
             width: 4px;
             background: var(--vermelho);
             opacity: 0.6;
+            z-index: 1;
         }
 
         body.tema-azul .plano-item::before { background: var(--azul); }
 
-        .plano-info { display: flex; flex-direction: column; }
+        .plano-info { display: flex; flex-direction: column; z-index: 2; }
         .plano-label { font-size: 0.95rem; font-weight: 500; color: #eee; }
         .plano-sub { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-        .plano-price { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .plano-price { font-size: 1.3rem; font-weight: 700; color: #fff; z-index: 2; }
 
-        /* Modal */
+        /* Modal com Blur Escuro (Novo Estilo) */
         .modal-wrap {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.94);
-            backdrop-filter: blur(10px);
+            /* Overlay escuro semi-transparente com desfoque forte */
+            background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             z-index: 100;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 1.5rem;
+            animation: fade-in 0.3s ease-out;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-body {
-            background: #080808;
-            border: 1px solid #222;
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 2.5rem 2rem;
-            border-radius: 30px;
+            border-radius: 35px;
             text-align: center;
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(0);
+            animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slide-up {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .btn-acao {
@@ -167,9 +203,17 @@
             text-transform: uppercase;
             margin-top: 1.5rem;
             transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
         }
 
-        body.tema-azul .btn-acao { background: var(--azul); }
+        body.tema-azul .btn-acao { 
+            background: var(--azul); 
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-acao:active {
+            transform: scale(0.97);
+        }
     </style>
 </head>
 <body>
@@ -181,7 +225,6 @@
 
     <main class="content-stack">
         
-        <!-- Bloco Principal -->
         <section class="vendas-card">
             <h1 class="logo-main">SALVATORE SHOP</h1>
             <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Seleção de Acesso Premium</p>
@@ -211,7 +254,6 @@
             </div>
         </section>
 
-        <!-- Bloco Semanal -->
         <section class="vendas-card">
             <h1 class="logo-main">PLANOS SEMANAIS</h1>
             <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Acesso de curta duração</p>
@@ -243,19 +285,17 @@
 
     </main>
 
-    <!-- UI Modal -->
     <div class="modal-wrap" id="modal-ui">
         <div class="modal-body">
-            <h2 class="text-xl font-bold text-white mb-2 uppercase">Confirmar Pedido</h2>
-            <p id="detalhes-msg" class="text-zinc-500 text-sm mb-6"></p>
+            <h2 class="text-xl font-bold text-white mb-2 uppercase tracking-wider">Confirmar Pedido</h2>
+            <p id="detalhes-msg" class="text-zinc-400 text-sm mb-6 leading-relaxed"></p>
             
             <button class="btn-acao text-white" id="btn-wa">Finalizar no WhatsApp</button>
-            <button class="mt-6 text-[10px] text-zinc-700 uppercase tracking-widest block mx-auto" onclick="fechar()">Cancelar</button>
+            <button class="mt-8 text-[11px] text-zinc-500 uppercase tracking-[4px] font-bold block mx-auto hover:text-white transition-colors" onclick="fechar()">Cancelar</button>
         </div>
     </div>
 
     <script>
-        // Efeito de transição de tema no scroll
         window.onscroll = () => {
             const limit = window.innerHeight * 0.4;
             document.body.classList.toggle('tema-azul', window.scrollY > limit);
@@ -268,7 +308,9 @@
 
             msg.innerHTML = `Você escolheu: <strong class="text-white">${nome}</strong><br>Valor total: <strong class="text-white">R$ ${valor}</strong>`;
             
-            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.display = 'flex';
+            }, 100);
 
             btn.onclick = () => {
                 const fone = "559191772809";
@@ -281,7 +323,6 @@
             document.getElementById('modal-ui').style.display = 'none';
         }
 
-        // Fechar ao clicar fora
         window.onclick = (e) => {
             if (e.target.id === 'modal-ui') fechar();
         };
