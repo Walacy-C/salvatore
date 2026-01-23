@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salvatore Shop | Oficial</title>
     
-    <!-- Importando fontes direto do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
@@ -14,287 +13,277 @@
     
     <style>
         :root {
-            --vermelho-neon: #ff0000;
-            --azul-neon: #3b82f6;
-            --preto-fosco: #0a0a0a;
-            --vidro: rgba(15, 15, 15, 0.82);
+            --vermelho: #ff0000;
+            --azul: #3b82f6;
+            --dark-glass: rgba(10, 10, 10, 0.85);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* Evita que fiquem selecionando textos sem querer */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: #000;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            min-height: 200vh;
+            min-height: 180vh;
             overflow-x: hidden;
         }
 
-        /* Ambientação de fundo */
-        .cenario-background {
+        /* Background Dinâmico */
+        .aura-container {
             position: fixed;
             inset: 0;
             z-index: -1;
             background: #000;
         }
 
-        .luz-fundo {
+        .aura-glow {
             position: absolute;
-            width: 650px;
-            height: 650px;
+            width: 70vw;
+            height: 70vw;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.45;
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: blur(100px);
+            opacity: 0.4;
+            transition: background 1.2s ease, transform 1s ease;
         }
 
-        /* Posicionamento manual das luzes */
-        #luz-superior { top: -15%; left: -10%; background: var(--vermelho-neon); }
-        #luz-inferior { bottom: -10%; right: -5%; background: rgba(255, 0, 0, 0.3); }
+        #aura-1 { top: -10%; left: -15%; background: var(--vermelho); }
+        #aura-2 { bottom: -5%; right: -10%; background: rgba(255, 0, 0, 0.2); }
 
-        /* Mudança de cor no scroll (azul) */
-        body.fundo-azul #luz-superior { background: var(--azul-neon); }
-        body.fundo-azul #luz-inferior { background: rgba(255, 255, 255, 0.4); }
+        body.tema-azul #aura-1 { background: var(--azul); }
+        body.tema-azul #aura-2 { background: rgba(255, 255, 255, 0.3); }
 
-        /* Estilo dos Títulos */
-        .logotipo-neon {
+        /* Tipografia */
+        .logo-main {
             font-family: 'Comfortaa', cursive;
-            font-size: clamp(2.2rem, 9vw, 3.2rem);
-            font-weight: 700;
+            font-size: clamp(2rem, 8vw, 3rem);
             text-align: center;
-            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-            background-size: 300% auto;
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff, #ff0000);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: brilho_flow 5s linear infinite;
-            margin-bottom: 2.5rem;
+            animation: move-gradient 4s linear infinite;
+            margin-bottom: 0.5rem;
         }
 
-        @keyframes brilho_flow {
-            to { background-position: 300% center; }
+        @keyframes move-gradient {
+            to { background-position: 200% center; }
         }
 
-        /* Cards de Venda */
-        .vendas-area {
+        /* Container de Vendas */
+        .content-stack {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 5rem 1.2rem;
-            gap: 12rem;
+            padding: 4rem 1rem;
+            gap: 10rem;
         }
 
-        .cartao-principal {
-            background: var(--vidro);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 2.8rem 2rem;
-            border-radius: 45px;
+        .vendas-card {
+            background: var(--dark-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 1.5rem;
+            border-radius: 40px;
             width: 100%;
-            max-width: 460px;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+            max-width: 440px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
         }
 
-        /* Botão com borda animada (CSS Puro) */
-        .btn-item {
+        /* Botões Refatorados */
+        .plano-item {
             position: relative;
-            padding: 3px;
-            margin-bottom: 1.4rem;
-            border-radius: 22px;
+            background: #121212;
+            margin-bottom: 1rem;
+            padding: 1.2rem;
+            border-radius: 20px;
             cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             overflow: hidden;
-            transition: all 0.4s ease;
         }
 
-        .btn-item:hover { transform: translateY(-5px) scale(1.02); }
+        .plano-item:hover {
+            background: #181818;
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
 
-        .btn-item::before {
+        /* Indicador Lateral de Cor */
+        .plano-item::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, transparent, var(--vermelho-neon));
-            animation: girar 4s linear infinite;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--vermelho);
+            opacity: 0.6;
         }
 
-        body.fundo-azul .btn-item::before {
-            background: conic-gradient(transparent, transparent, transparent, var(--azul-neon));
-        }
+        body.tema-azul .plano-item::before { background: var(--azul); }
 
-        @keyframes girar {
-            100% { transform: rotate(360deg); }
-        }
+        .plano-info { display: flex; flex-direction: column; }
+        .plano-label { font-size: 0.95rem; font-weight: 500; color: #eee; }
+        .plano-sub { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+        .plano-price { font-size: 1.3rem; font-weight: 700; color: #fff; }
 
-        .btn-interno {
-            position: relative;
-            background: #111;
-            padding: 1.3rem;
-            border-radius: 20px;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .label-plano { font-size: 0.8rem; color: #777; text-transform: uppercase; letter-spacing: 2px; }
-        .valor-plano { font-size: 1.7rem; font-weight: 700; color: #fff; margin-top: 6px; }
-
-        /* Modal customizado para parecer dev humano */
-        .modal-sobreposicao {
+        /* Modal */
+        .modal-wrap {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.92);
-            backdrop-filter: blur(12px);
-            z-index: 999;
+            background: rgba(0,0,0,0.94);
+            backdrop-filter: blur(10px);
+            z-index: 100;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
 
-        .modal-conteudo {
-            background: #050505;
-            border: 1px solid #333;
-            padding: 3rem 2rem;
-            border-radius: 35px;
+        .modal-body {
+            background: #080808;
+            border: 1px solid #222;
+            padding: 2.5rem 2rem;
+            border-radius: 30px;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 380px;
         }
 
-        .btn-whatsapp {
-            background: var(--vermelho-neon);
+        .btn-acao {
+            background: var(--vermelho);
             width: 100%;
-            padding: 1.1rem;
-            border-radius: 16px;
-            font-weight: 700;
+            padding: 1rem;
+            border-radius: 14px;
+            font-weight: 800;
             text-transform: uppercase;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             transition: 0.3s;
         }
 
-        body.fundo-azul .btn-whatsapp { background: var(--azul-neon); }
+        body.tema-azul .btn-acao { background: var(--azul); }
     </style>
 </head>
 <body>
 
-    <!-- Fundo estático com luzes móveis -->
-    <div class="cenario-background">
-        <div class="luz-fundo" id="luz-superior"></div>
-        <div class="luz-fundo" id="luz-inferior"></div>
+    <div class="aura-container">
+        <div class="aura-glow" id="aura-1"></div>
+        <div class="aura-glow" id="aura-2"></div>
     </div>
 
-    <div class="vendas-area">
+    <main class="content-stack">
         
-        <!-- Bloco Salvatore Shop (Vemelho) -->
-        <section class="cartao-principal">
-            <h1 class="logotipo-neon">SALVATORE SHOP</h1>
+        <!-- Bloco Principal -->
+        <section class="vendas-card">
+            <h1 class="logo-main">SALVATORE SHOP</h1>
+            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Seleção de Acesso Premium</p>
 
-            <div class="btn-item" onclick="abrirPedido('alugar fukase por 30 dias', '5,00')">
-                <div class="btn-interno">
-                    <span class="label-plano">Alugar fukase por 30 dias</span>
-                    <span class="valor-plano"><span class="text-red-600">R$</span> 5,00</span>
+            <div class="plano-item" onclick="checkout('Fukase (30 dias)', '5,00', 'alugar')">
+                <div class="plano-info">
+                    <span class="plano-label">Fukase Mensal</span>
+                    <span class="plano-sub">Acesso por 30 dias</span>
                 </div>
+                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 5,00</div>
             </div>
 
-            <div class="btn-item" onclick="abrirPedido('plano vitalício', '25,00')">
-                <div class="btn-interno">
-                    <span class="label-plano">Comprar plano vitalício</span>
-                    <span class="valor-plano"><span class="text-red-600">R$</span> 25,00</span>
+            <div class="plano-item" onclick="checkout('Plano Vitalício', '25,00', 'comprar')">
+                <div class="plano-info">
+                    <span class="plano-label">Acesso Vitalício</span>
+                    <span class="plano-sub">Pagamento único</span>
                 </div>
+                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 25,00</div>
             </div>
 
-            <div class="btn-item" onclick="abrirPedido('arquivos do bot', '50,00')">
-                <div class="btn-interno">
-                    <span class="label-plano">Comprar arquivos do bot</span>
-                    <span class="valor-plano"><span class="text-red-600">R$</span> 50,00</span>
+            <div class="plano-item" onclick="checkout('Arquivos do Bot', '50,00', 'comprar')">
+                <div class="plano-info">
+                    <span class="plano-label">Arquivos Fonte</span>
+                    <span class="plano-sub">Pacote completo</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- Bloco Planos Semanais (Azul) -->
-        <section class="cartao-principal">
-            <h1 class="logotipo-neon">PLANOS SEMANAIS</h1>
-
-            <div class="btn-item" onclick="abrirPedido('alugar fukase por 1 semana', '1,25')">
-                <div class="btn-interno">
-                    <span class="label-plano">Alugar fukase por 1 semana</span>
-                    <span class="valor-plano"><span class="text-blue-500">R$</span> 1,25</span>
-                </div>
-            </div>
-
-            <div class="btn-item" onclick="abrirPedido('alugar fukase por 2 semanas', '2,50')">
-                <div class="btn-interno">
-                    <span class="label-plano">Alugar fukase por 2 semanas</span>
-                    <span class="valor-plano"><span class="text-blue-500">R$</span> 2,50</span>
-                </div>
-            </div>
-
-            <div class="btn-item" onclick="abrirPedido('alugar fukase por 3 semanas', '3,75')">
-                <div class="btn-interno">
-                    <span class="label-plano">Alugar fukase por 3 semanas</span>
-                    <span class="valor-plano"><span class="text-blue-500">R$</span> 3,75</span>
-                </div>
+                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 50,00</div>
             </div>
         </section>
 
-    </div>
+        <!-- Bloco Semanal -->
+        <section class="vendas-card">
+            <h1 class="logo-main">PLANOS SEMANAIS</h1>
+            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Acesso de curta duração</p>
 
-    <!-- Modal de Interação -->
-    <div class="modal-sobreposicao" id="ui-modal">
-        <div class="modal-conteudo">
-            <h2 class="text-2xl font-bold text-white uppercase mb-2">Confirmar plano</h2>
-            <p id="info-pedido" class="text-zinc-500 text-sm leading-relaxed"></p>
+            <div class="plano-item" onclick="checkout('Fukase (1 semana)', '1,25', 'alugar')">
+                <div class="plano-info">
+                    <span class="plano-label">Fukase - 01 Semana</span>
+                    <span class="plano-sub">Renovação semanal</span>
+                </div>
+                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 1,25</div>
+            </div>
+
+            <div class="plano-item" onclick="checkout('Fukase (2 semanas)', '2,50', 'alugar')">
+                <div class="plano-info">
+                    <span class="plano-label">Fukase - 02 Semanas</span>
+                    <span class="plano-sub">Renovação quinzenal</span>
+                </div>
+                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 2,50</div>
+            </div>
+
+            <div class="plano-item" onclick="checkout('Fukase (3 semanas)', '3,75', 'alugar')">
+                <div class="plano-info">
+                    <span class="plano-label">Fukase - 03 Semanas</span>
+                    <span class="plano-sub">Período estendido</span>
+                </div>
+                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 3,75</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- UI Modal -->
+    <div class="modal-wrap" id="modal-ui">
+        <div class="modal-body">
+            <h2 class="text-xl font-bold text-white mb-2 uppercase">Confirmar Pedido</h2>
+            <p id="detalhes-msg" class="text-zinc-500 text-sm mb-6"></p>
             
-            <button class="btn-whatsapp" id="btn-finalizar">Chamar no WhatsApp</button>
-            <button class="mt-6 text-[11px] text-zinc-700 uppercase tracking-widest block mx-auto" onclick="fecharModal()">Voltar</button>
+            <button class="btn-acao text-white" id="btn-wa">Finalizar no WhatsApp</button>
+            <button class="mt-6 text-[10px] text-zinc-700 uppercase tracking-widest block mx-auto" onclick="fechar()">Cancelar</button>
         </div>
     </div>
 
     <script>
-        // Handler do scroll para mudar o clima da página
-        // Isso dá uma cara de site feito sob medida
-        window.onscroll = function() {
-            let threshold = window.innerHeight * 0.45;
-            if (window.pageYOffset > threshold) {
-                document.body.classList.add('fundo-azul');
-            } else {
-                document.body.classList.remove('fundo-azul');
-            }
+        // Efeito de transição de tema no scroll
+        window.onscroll = () => {
+            const limit = window.innerHeight * 0.4;
+            document.body.classList.toggle('tema-azul', window.scrollY > limit);
         };
 
-        // Função de compra simplificada
-        function abrirPedido(item, preco) {
-            const modal = document.getElementById('ui-modal');
-            const texto = document.getElementById('info-pedido');
-            const btn = document.getElementById('btn-finalizar');
+        function checkout(nome, valor, tipo) {
+            const modal = document.getElementById('modal-ui');
+            const msg = document.getElementById('detalhes-msg');
+            const btn = document.getElementById('btn-wa');
 
-            // Lógica semântica de verbos
-            let verbo = (item.includes('arquivos') || item.includes('vitalício')) ? 'comprar' : 'alugar';
-
-            texto.innerHTML = `Você selecionou: <br><strong class="text-white">${item}</strong> por <strong>R$ ${preco}</strong>. <br><br>Clique abaixo para finalizar com o Salvatore.`;
+            msg.innerHTML = `Você escolheu: <strong class="text-white">${nome}</strong><br>Valor total: <strong class="text-white">R$ ${valor}</strong>`;
             
             modal.style.display = 'flex';
 
-            btn.onclick = function() {
-                const tel = "559191772809";
-                const ddd = `Olá, Salvatore! Gostaria de ${verbo} o ${item}.`;
-                window.location.href = `https://wa.me/${tel}?text=${encodeURIComponent(ddd)}`;
+            btn.onclick = () => {
+                const fone = "559191772809";
+                const texto = `Olá, Salvatore! Gostaria de ${tipo} o plano ${nome} por R$ ${valor}.`;
+                window.location.href = `https://wa.me/${fone}?text=${encodeURIComponent(texto)}`;
             };
         }
 
-        function fecharModal() {
-            document.getElementById('ui-modal').style.display = 'none';
+        function fechar() {
+            document.getElementById('modal-ui').style.display = 'none';
         }
 
-        // Fecha se clicar fora do conteúdo
+        // Fechar ao clicar fora
         window.onclick = (e) => {
-            if (e.target.id === 'ui-modal') fecharModal();
+            if (e.target.id === 'modal-ui') fechar();
         };
     </script>
 </body>
