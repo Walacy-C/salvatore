@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salvatore Shop | Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- API do YouTube -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Rajdhani:wght@500;700&display=swap');
 
@@ -48,19 +50,8 @@
             animation: move 20s infinite alternate;
         }
 
-        .blob-1 {
-            top: -20%;
-            left: -10%;
-            background: rgba(150, 0, 0, 0.5);
-        }
-
-        .blob-2 {
-            bottom: -20%;
-            right: -10%;
-            background: rgba(255, 0, 0, 0.2);
-            animation-duration: 25s;
-            animation-delay: -7s;
-        }
+        .blob-1 { top: -20%; left: -10%; background: rgba(150, 0, 0, 0.5); }
+        .blob-2 { bottom: -20%; right: -10%; background: rgba(255, 0, 0, 0.2); animation-duration: 25s; animation-delay: -7s; }
 
         @keyframes move {
             from { transform: translate(0, 0) scale(1); }
@@ -73,7 +64,6 @@
             100% { background-position: 200% center; }
         }
 
-        /* Título RGB */
         .rgb-text {
             font-family: 'Comfortaa', cursive;
             font-size: clamp(2rem, 10vw, 3.2rem);
@@ -116,18 +106,13 @@
             overflow: hidden;
         }
 
-        .option-button:hover {
-            transform: scale(1.04);
-        }
+        .option-button:hover { transform: scale(1.04); }
 
         .option-button::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150%;
-            height: 350%;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 150%; height: 350%;
             background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff, #ff0000);
             background-size: 200% auto;
             animation: rgbFlow 3s linear infinite;
@@ -144,31 +129,60 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
         }
 
-        .option-button:hover .option-content {
-            background: #282828;
+        .option-name { font-size: 1rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        .option-value { font-size: 1.6rem; font-weight: 700; color: #ffffff; margin-top: 4px; }
+        .currency { color: #ff0000; margin-right: 5px; }
+
+        /* Ícone de Música Flutuante */
+        .music-player-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #1c1c1c;
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
-        .option-name {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .music-player-fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
         }
 
-        .option-value {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-top: 4px;
+        .music-player-fab svg {
+            width: 24px;
+            height: 24px;
+            fill: #ff0000;
         }
 
-        .currency {
-            color: #ff0000;
-            margin-right: 5px;
+        /* Animação de Pulso para o Ícone */
+        .music-player-fab.playing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        /* Iframe Oculto do YouTube */
+        #youtube-audio {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 0;
+            pointer-events: none;
         }
 
         /* Modal */
@@ -180,7 +194,7 @@
             backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            z-index: 200;
         }
 
         .modal-box {
@@ -190,7 +204,6 @@
             border-radius: 25px;
             text-align: center;
             max-width: 350px;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
         }
 
         .buy-btn {
@@ -202,22 +215,6 @@
             border-radius: 12px;
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            transition: transform 0.2s;
-        }
-
-        .buy-btn:hover {
-            background: #cc0000;
-            transform: translateY(-2px);
-        }
-
-        .cancel-btn {
-            margin-top: 1rem;
-            color: #555;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -228,10 +225,20 @@
         <div class="blob blob-2"></div>
     </div>
 
+    <!-- Botão de Música Flutuante -->
+    <div class="music-player-fab" id="music-fab" onclick="toggleMusic()">
+        <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
+
+    <!-- Iframe oculto do YouTube (Salvatore - Lana Del Rey) -->
+    <div id="player-container" style="display: none;">
+        <div id="youtube-player"></div>
+    </div>
+
     <div class="shop-container">
         <h1 class="rgb-text">SALVATORE SHOP</h1>
 
-        <!-- Opção 1 -->
         <div class="option-button" onclick="openPurchaseModal('alugar fukase por 30 dias')">
             <div class="option-content">
                 <span class="option-name">Alugar fukase por 30 dias</span>
@@ -239,7 +246,6 @@
             </div>
         </div>
 
-        <!-- Opção 2 -->
         <div class="option-button" onclick="openPurchaseModal('comprar plano vitalício')">
             <div class="option-content">
                 <span class="option-name">Comprar plano vitalício</span>
@@ -247,7 +253,6 @@
             </div>
         </div>
 
-        <!-- Opção 3 (Ajustada) -->
         <div class="option-button" onclick="openPurchaseModal('comprar arquivos do bot')">
             <div class="option-content">
                 <span class="option-name">Comprar arquivos do bot</span>
@@ -256,7 +261,7 @@
         </div>
 
         <p class="text-center text-[10px] text-zinc-600 mt-6 tracking-[4px] uppercase font-bold">
-            Todos os direitos autorais reservados a Salvatore — 2026®
+            Security Protocol Verified
         </p>
     </div>
 
@@ -265,23 +270,62 @@
             <h2 class="text-2xl font-bold mb-2 text-white">Confirmar Pedido</h2>
             <p id="modal-msg" class="text-zinc-400 text-sm"></p>
             <button class="buy-btn" id="confirm-buy">Ir para o WhatsApp</button>
-            <span class="cancel-btn" onclick="closeModal()">Sair</span>
+            <span class="block mt-4 text-zinc-600 text-[10px] cursor-pointer" onclick="closeModal()">CANCELAR</span>
         </div>
     </div>
 
     <script>
+        let player;
+        let isPlaying = false;
+
+        // Inicializa o Player do YouTube
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'GVQON-muEFc', // ID do vídeo Salvatore - Lana Del Rey
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'GVQON-muEFc'
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("Player Pronto");
+        }
+
+        function toggleMusic() {
+            const fab = document.getElementById('music-fab');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+
+            if (!isPlaying) {
+                player.playVideo();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                fab.classList.add('playing');
+                isPlaying = true;
+            } else {
+                player.pauseVideo();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                fab.classList.remove('playing');
+                isPlaying = false;
+            }
+        }
+
         function openPurchaseModal(planName) {
             const modal = document.getElementById('modal');
             const msg = document.getElementById('modal-msg');
-            
-            // Verifica se é a opção de arquivos para mudar o verbo
-            let acao = "assinar";
-            if (planName.toLowerCase().includes("arquivos")) {
-                acao = "comprar";
-            }
+            let acao = planName.toLowerCase().includes("arquivos") ? "comprar" : "assinar";
 
             msg.innerHTML = `Deseja ${acao} o plano:<br><b class="text-red-500 uppercase">${planName}</b>?`;
-            
             modal.style.display = 'flex';
             
             document.getElementById('confirm-buy').onclick = function() {
@@ -297,9 +341,7 @@
 
         window.onclick = function(event) {
             const modal = document.getElementById('modal');
-            if (event.target == modal) {
-                closeModal();
-            }
+            if (event.target == modal) closeModal();
         }
     </script>
 </body>
