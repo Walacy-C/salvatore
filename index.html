@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salvatore Shop | Ultraviolence Edition</title>
+    <title>Salvatore Shop | Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- API do YouTube -->
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -165,7 +165,7 @@
             fill: #ff0000;
         }
 
-        /* Animação de Pulso */
+        /* Animação de Pulso para o Ícone */
         .music-player-fab.playing {
             animation: pulse 2s infinite;
         }
@@ -174,6 +174,15 @@
             0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        /* Iframe Oculto do YouTube */
+        #youtube-audio {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 0;
+            pointer-events: none;
         }
 
         /* Modal */
@@ -222,7 +231,7 @@
         <svg id="pause-icon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </div>
 
-    <!-- Iframe oculto para a Playlist -->
+    <!-- Iframe oculto do YouTube (Salvatore - Lana Del Rey) -->
     <div id="player-container" style="display: none;">
         <div id="youtube-player"></div>
     </div>
@@ -269,17 +278,17 @@
         let player;
         let isPlaying = false;
 
-        // Inicializa o Player com a Playlist do Ultraviolence
+        // Inicializa o Player do YouTube
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0',
                 width: '0',
+                videoId: 'GVQON-muEFc', // ID do vídeo Salvatore - Lana Del Rey
                 playerVars: {
-                    'listType': 'playlist',
-                    'list': 'PLR2SiaCszYfVj426K9UAn0y78S6WvGvjH', // ID da Playlist Oficial Ultraviolence
                     'autoplay': 0,
                     'controls': 0,
-                    'loop': 1
+                    'loop': 1,
+                    'playlist': 'GVQON-muEFc'
                 },
                 events: {
                     'onReady': onPlayerReady
@@ -288,7 +297,7 @@
         }
 
         function onPlayerReady(event) {
-            console.log("Álbum Ultraviolence Carregado");
+            console.log("Player Pronto");
         }
 
         function toggleMusic() {
@@ -338,4 +347,3 @@
 </body>
 </html>
 
-    
