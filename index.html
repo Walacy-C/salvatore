@@ -338,47 +338,4 @@
 </body>
 </html>
 
-use-icon');
-
-            if (!isPlaying) {
-                player.playVideo();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                fab.classList.add('playing');
-                isPlaying = true;
-            } else {
-                player.pauseVideo();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                fab.classList.remove('playing');
-                isPlaying = false;
-            }
-        }
-
-        function openPurchaseModal(planName) {
-            const modal = document.getElementById('modal');
-            const msg = document.getElementById('modal-msg');
-            let acao = planName.toLowerCase().includes("arquivos") ? "comprar" : "assinar";
-
-            msg.innerHTML = `Deseja ${acao} o plano:<br><b class="text-red-500 uppercase">${planName}</b>?`;
-            modal.style.display = 'flex';
-            
-            document.getElementById('confirm-buy').onclick = function() {
-                const phoneNumber = "559191772809";
-                const message = `Olá, Salvatore. Eu quero ${acao} o ${planName}`;
-                window.location.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-            };
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target == modal) closeModal();
-        }
-    </script>
-</body>
-</html>
-
+    
