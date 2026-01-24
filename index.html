@@ -15,7 +15,8 @@
         :root {
             --vermelho: #ff0000;
             --azul: #3b82f6;
-            --dark-glass: rgba(10, 10, 10, 0.85);
+            --verde: #22c55e;
+            --dark-glass: rgba(10, 10, 10, 0.9);
         }
 
         * {
@@ -30,426 +31,350 @@
             background-color: #000;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            min-height: 180vh;
+            min-height: 200vh;
             overflow-x: hidden;
+            transition: background 1s ease;
         }
 
-        /* Background Dinâmico */
-        .aura-container {
+        /* --- SISTEMA DE BLUR DINÂMICO --- */
+        #main-content {
+            transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: filter, transform;
+        }
+
+        .blur-active {
+            filter: blur(15px) brightness(0.6);
+            transform: scale(0.97);
+            pointer-events: none;
+        }
+
+        /* Ambientação de Fundo */
+        .aura-fixa {
             position: fixed;
             inset: 0;
             z-index: -1;
             background: #000;
         }
 
-        .aura-glow {
+        .luz-espelhada {
             position: absolute;
-            width: 70vw;
-            height: 70vw;
+            width: 80vw;
+            height: 80vw;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-            transition: background 1.2s ease, transform 1s ease;
+            filter: blur(130px);
+            opacity: 0.35;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        #aura-1 { top: -10%; left: -15%; background: var(--vermelho); }
-        #aura-2 { bottom: -5%; right: -10%; background: rgba(255, 0, 0, 0.2); }
+        #luz-1 { top: -10%; left: -20%; background: var(--vermelho); }
+        #luz-2 { bottom: -10%; right: -15%; background: rgba(255, 0, 0, 0.2); }
 
-        body.tema-azul #aura-1 { background: var(--azul); }
-        body.tema-azul #aura-2 { background: rgba(255, 255, 255, 0.3); }
+        body.tema-azul #luz-1 { background: var(--azul); }
+        body.tema-azul #luz-2 { background: rgba(59, 130, 246, 0.3); }
 
-        /* Tipografia */
-        .logo-main {
+        body.tema-verde #luz-1 { background: var(--verde); }
+        body.tema-verde #luz-2 { background: rgba(34, 197, 94, 0.3); }
+
+        /* Pirulitos */
+        .lollipop-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .lollipop {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Conteúdo */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1.2rem;
+            gap: 6rem;
+        }
+
+        .painel-vendas, .painel-sobre {
+            background: var(--dark-glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 45px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            padding: 2.5rem 1.8rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-animada {
             font-family: 'Comfortaa', cursive;
-            font-size: clamp(2rem, 8vw, 3rem);
+            font-size: clamp(2.2rem, 9vw, 3.2rem);
             text-align: center;
-            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff, #ff0000);
-            background-size: 200% auto;
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: move-gradient 4s linear infinite;
-            margin-bottom: 0.5rem;
+            animation: flow 6s linear infinite;
         }
 
-        @keyframes move-gradient {
-            to { background-position: 200% center; }
-        }
+        @keyframes flow { to { background-position: 300% center; } }
 
-        /* Container de Vendas */
-        .content-stack {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 4rem 1rem;
-            gap: 10rem;
-        }
-
-        .vendas-card {
-            background: var(--dark-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 2.5rem 1.5rem;
-            border-radius: 40px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-        }
-
-        /* Botões com Animação */
-        .plano-item {
+        .item-clicavel {
             position: relative;
-            background: #121212;
-            margin-bottom: 1rem;
-            padding: 1.2rem;
-            border-radius: 20px;
+            background: #111;
+            margin-bottom: 1.2rem;
+            padding: 1.3rem;
+            border-radius: 22px;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            overflow: hidden;
-            transform: scale(1);
+            transition: 0.2s ease;
         }
 
-        .plano-item:hover {
-            background: #181818;
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .plano-item:active {
-            transform: scale(0.96) translateX(3px);
-        }
-
-        .plano-item::before {
+        .item-clicavel:active { transform: scale(0.95); background: #181818; }
+        .item-clicavel::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0;
+            left: 0; top: 15%; bottom: 15%;
             width: 4px;
             background: var(--vermelho);
-            opacity: 0.6;
-            z-index: 1;
+            border-radius: 0 4px 4px 0;
+            transition: 0.8s;
+        }
+        body.tema-azul .item-clicavel::before { background: var(--azul); }
+
+        /* Seção Sobre */
+        .painel-sobre {
+            max-width: 600px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 2rem;
         }
 
-        body.tema-azul .plano-item::before { background: var(--azul); }
+        @media (max-width: 640px) {
+            .painel-sobre { flex-direction: column; text-align: center; }
+        }
 
-        .plano-info { display: flex; flex-direction: column; z-index: 2; }
-        .plano-label { font-size: 0.95rem; font-weight: 500; color: #eee; }
-        .plano-sub { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-        .plano-price { font-size: 1.3rem; font-weight: 700; color: #fff; z-index: 2; }
+        .foto-perfil {
+            width: 120px; height: 120px; border-radius: 50%;
+            object-fit: cover; border: 4px solid var(--verde);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+            flex-shrink: 0;
+        }
 
-        /* Modal com Blur */
-        .modal-wrap {
+        /* Modal Customizado */
+        .ui-modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6); 
-            backdrop-filter: blur(15px);
-            z-index: 100;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
+            background: rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .modal-body {
-            background: rgba(15, 15, 15, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2.5rem 2rem;
-            border-radius: 35px;
+        .modal-box {
+            background: #080808;
+            border: 1px solid #222;
+            padding: 2.8rem 2rem;
+            border-radius: 38px;
             text-align: center;
             width: 100%;
-            max-width: 400px;
-            animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 380px;
+            transform: translateY(40px) scale(0.9);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 50px 100px rgba(0,0,0,1);
         }
 
-        @keyframes slide-up {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .ui-modal.show { display: flex; opacity: 1; }
+        .ui-modal.show .modal-box { transform: translateY(0) scale(1); }
 
-        .btn-acao {
+        .btn-confirm {
             background: var(--vermelho);
             width: 100%;
-            padding: 1rem;
-            border-radius: 14px;
+            padding: 1.2rem;
+            border-radius: 18px;
             font-weight: 800;
             text-transform: uppercase;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
         }
-
-        body.tema-azul .btn-acao { background: var(--azul); }
-
-        /* --- CHAT IA --- */
-        #chat-trigger {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 60px;
-            height: 60px;
-            background: var(--vermelho);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 90;
-            box-shadow: 0 10px 30px rgba(255,0,0,0.3);
-            transition: 0.3s;
-        }
-
-        body.tema-azul #chat-trigger {
-            background: var(--azul);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        }
-
-        #chat-trigger:hover { transform: scale(1.1) rotate(5deg); }
-
-        #chat-window {
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            width: 320px;
-            height: 450px;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 91;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
-
-        .chat-header {
-            padding: 1rem;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .status-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; }
-
-        #chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            scrollbar-width: none;
-        }
-
-        .msg { max-width: 85%; padding: 8px 14px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
-        .msg-ia { background: rgba(255,255,255,0.05); align-self: flex-start; border-bottom-left-radius: 2px; color: #ccc; }
-        .msg-user { background: var(--vermelho); align-self: flex-end; border-bottom-right-radius: 2px; color: #fff; }
-        body.tema-azul .msg-user { background: var(--azul); }
-
-        .chat-input-area {
-            padding: 1rem;
-            display: flex;
-            gap: 8px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        #chat-input {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
-            color: #fff;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .typing { font-size: 0.7rem; color: #666; margin-left: 1rem; margin-bottom: 0.5rem; display: none; }
+        body.tema-azul .btn-confirm { background: var(--azul); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
     </style>
 </head>
 <body>
 
-    <div class="aura-container">
-        <div class="aura-glow" id="aura-1"></div>
-        <div class="aura-glow" id="aura-2"></div>
+    <div class="aura-fixa">
+        <div class="luz-espelhada" id="luz-1"></div>
+        <div class="luz-espelhada" id="luz-2"></div>
     </div>
 
-    <main class="content-stack">
-        <!-- Seção 1 -->
-        <section class="vendas-card">
-            <h1 class="logo-main">SALVATORE SHOP</h1>
-            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Seleção de Acesso Premium</p>
+    <div class="lollipop-rain" id="candy-container"></div>
 
-            <div class="plano-item" onclick="checkout('Fukase (30 dias)', '5,00', 'alugar')">
-                <div class="plano-info">
-                    <span class="plano-label">Fukase Mensal</span>
-                    <span class="plano-sub">Acesso por 30 dias</span>
+    <div id="main-content">
+        <div class="page-wrapper">
+            
+            <!-- PLANOS MENSAIS -->
+            <section class="painel-vendas">
+                <h1 class="logo-animada">SALVATORE SHOP</h1>
+                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[4px] mb-8 font-bold">Acesso Premium</p>
+
+                <div class="item-clicavel" onclick="pedir('Fukase Mensal', '5,00', 'alugar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">Acesso 30 Dias</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                    </div>
+                    <div class="text-xl font-bold text-white">R$ 5,00</div>
                 </div>
-                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 5,00</div>
-            </div>
 
-            <div class="plano-item" onclick="checkout('Plano Vitalício', '25,00', 'comprar')">
-                <div class="plano-info">
-                    <span class="plano-label">Acesso Vitalício</span>
-                    <span class="plano-sub">Pagamento único</span>
+                <div class="item-clicavel" onclick="pedir('Plano Vitalício', '25,00', 'comprar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">Acesso Vitalício</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Pagamento Único</span>
+                    </div>
+                    <div class="text-xl font-bold text-white">R$ 25,00</div>
                 </div>
-                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 25,00</div>
-            </div>
 
-            <div class="plano-item" onclick="checkout('Arquivos do Bot', '50,00', 'comprar')">
-                <div class="plano-info">
-                    <span class="plano-label">Arquivos Fonte</span>
-                    <span class="plano-sub">Pacote completo</span>
+                <div class="item-clicavel" onclick="pedir('Arquivos do Bot', '50,00', 'comprar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">Arquivos Fonte</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Código Completo</span>
+                    </div>
+                    <div class="text-xl font-bold text-white">R$ 50,00</div>
                 </div>
-                <div class="plano-price"><span class="text-red-600 text-sm">R$</span> 50,00</div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Seção 2 -->
-        <section class="vendas-card">
-            <h1 class="logo-main">PLANOS SEMANAIS</h1>
-            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[3px] mb-8">Acesso de curta duração</p>
+            <!-- PLANOS SEMANAIS -->
+            <section class="painel-vendas">
+                <h1 class="logo-animada">PLANOS SEMANAIS</h1>
+                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[4px] mb-8 font-bold">Curta Duração</p>
 
-            <div class="plano-item" onclick="checkout('Fukase (1 semana)', '1,25', 'alugar')">
-                <div class="plano-info">
-                    <span class="plano-label">Fukase - 01 Semana</span>
-                    <span class="plano-sub">Renovação semanal</span>
+                <div class="item-clicavel" onclick="pedir('Semanal (01)', '1,25', 'alugar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">01 Semana</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                    </div>
+                    <div class="text-xl font-bold text-blue-500">R$ 1,25</div>
                 </div>
-                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 1,25</div>
-            </div>
 
-            <div class="plano-item" onclick="checkout('Fukase (2 semanas)', '2,50', 'alugar')">
-                <div class="plano-info">
-                    <span class="plano-label">Fukase - 02 Semanas</span>
-                    <span class="plano-sub">Renovação quinzenal</span>
+                <div class="item-clicavel" onclick="pedir('Semanal (02)', '2,50', 'alugar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">02 Semanas</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                    </div>
+                    <div class="text-xl font-bold text-blue-500">R$ 2,50</div>
                 </div>
-                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 2,50</div>
-            </div>
 
-            <div class="plano-item" onclick="checkout('Fukase (3 semanas)', '3,75', 'alugar')">
-                <div class="plano-info">
-                    <span class="plano-label">Fukase - 03 Semanas</span>
-                    <span class="plano-sub">Período estendido</span>
+                <div class="item-clicavel" onclick="pedir('Semanal (03)', '3,75', 'alugar')">
+                    <div class="pr-4">
+                        <span class="block font-bold text-white text-lg">03 Semanas</span>
+                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                    </div>
+                    <div class="text-xl font-bold text-blue-500">R$ 3,75</div>
                 </div>
-                <div class="plano-price"><span class="text-blue-500 text-sm">R$</span> 3,75</div>
-            </div>
-        </section>
-    </main>
+            </section>
+
+            <!-- SOBRE -->
+            <section class="painel-sobre">
+                <img src="https://raw.githubusercontent.com/nazuninha/uploads/main/fotos/1769232164537_0f4tm7.jpg" alt="Salvatore" class="foto-perfil" onerror="this.src='https://ui-avatars.com/api/?name=Salvatore&background=22c55e&color=fff'">
+                <div class="bio-texto">
+                    <h2 class="text-2xl font-bold text-white mb-4 border-b border-green-500/30 pb-2">Walacy Salvatore</h2>
+                <p>
+                    Walacy, conhecido como <strong>“Salvatore”</strong>, é um programador pouco conhecido na indústria de programação, mas o mesmo tem grandes projetos como o famoso <strong>"Fukase-bot"</strong>. O projeto em si é um bot de WhatsApp muito popular entre os jovens entre 12 a 17 anos, com mais de <strong>4000 usuários</strong> e presente em mais de 60 grupos.
+                </p>
+                <p class="mt-3">
+                    Salvatore é um rapaz muito admirado pelo seu acolhimento e empatia pelos usuários do Fukase-bot. Salvatore surgiu aleatoriamente em fevereiro de 2025 com o Fukase, garantindo segurança, interação, brincadeiras e conforto para os grupos com seu bot que hoje em dia é reconhecido nacionalmente na comunidade do WhatsApp.
+                </p>
+                </div>
+            </section>
+        </div>
+    </div>
 
     <!-- Modal UI -->
-    <div class="modal-wrap" id="modal-ui">
-        <div class="modal-body">
-            <h2 class="text-xl font-bold text-white mb-2 uppercase tracking-wider">Confirmar Pedido</h2>
-            <p id="detalhes-msg" class="text-zinc-400 text-sm mb-6"></p>
-            <button class="btn-acao text-white" id="btn-wa">Finalizar no WhatsApp</button>
-            <button class="mt-8 text-[11px] text-zinc-500 uppercase tracking-[4px] font-bold block mx-auto" onclick="fechar()">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- Chat Flutuante -->
-    <div id="chat-trigger" onclick="toggleChat()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-text"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h6"/></svg>
-    </div>
-
-    <div id="chat-window">
-        <div class="chat-header">
-            <div class="status-dot"></div>
-            <div>
-                <p class="text-xs font-bold uppercase tracking-widest">Salvatore AI</p>
-                <p class="text-[10px] text-zinc-500">Suporte Oficial</p>
-            </div>
-        </div>
-        <div id="chat-messages">
-            <div class="msg msg-ia">Olá! Sou o assistente da Salvatore Shop. Como posso te ajudar com nossos planos hoje?</div>
-        </div>
-        <div class="typing" id="typing-indicator">Salvatore está digitando...</div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Pergunte sobre os planos..." autocomplete="off">
-            <button onclick="sendMessage()" class="text-zinc-400 hover:text-white transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
-            </button>
+    <div class="ui-modal" id="modal-screen">
+        <div class="modal-box">
+            <h3 class="text-xl font-bold text-white uppercase mb-2">Confirmar Pedido</h3>
+            <p id="detalhe-pedido" class="text-zinc-500 text-sm mb-6 leading-loose"></p>
+            <button class="btn-confirm text-white" id="confirm-wa">Finalizar no WhatsApp</button>
+            <button class="mt-6 text-[10px] text-zinc-700 uppercase tracking-widest block mx-auto font-bold" onclick="fechar()">Cancelar</button>
         </div>
     </div>
 
     <script>
-        const apiKey = ""; // Chave injetada pelo ambiente
+        // Lógica de Pirulitos
+        function createLollipop() {
+            const container = document.getElementById('candy-container');
+            const pop = document.createElement('div');
+            pop.classList.add('lollipop');
+            pop.innerText = '🍭';
+            pop.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 5 + 3;
+            pop.style.animationDuration = duration + 's';
+            container.appendChild(pop);
+            setTimeout(() => pop.remove(), duration * 1000);
+        }
+        setInterval(createLollipop, 600);
 
+        // Scroll Cores
         window.onscroll = () => {
-            const limit = window.innerHeight * 0.4;
-            document.body.classList.toggle('tema-azul', window.scrollY > limit);
+            const scrollPos = window.scrollY;
+            const h = window.innerHeight;
+            if (scrollPos > h * 1.2) document.body.className = 'tema-verde';
+            else if (scrollPos > h * 0.4) document.body.className = 'tema-azul';
+            else document.body.className = '';
         };
 
-        function checkout(nome, valor, tipo) {
-            const modal = document.getElementById('modal-ui');
-            const msg = document.getElementById('detalhes-msg');
-            const btn = document.getElementById('btn-wa');
-            msg.innerHTML = `Você escolheu: <strong class="text-white">${nome}</strong><br>Valor total: <strong class="text-white">R$ ${valor}</strong>`;
-            setTimeout(() => { modal.style.display = 'flex'; }, 100);
+        // Funções do Modal
+        function pedir(nome, preco, tipo) {
+            const modal = document.getElementById('modal-screen');
+            const content = document.getElementById('main-content');
+            const info = document.getElementById('detalhe-pedido');
+            const btn = document.getElementById('confirm-wa');
+
+            info.innerHTML = `Você escolheu: <strong class="text-white">${nome}</strong><br>Valor total: <strong class="text-white">R$ ${preco}</strong>`;
+            
+            content.classList.add('blur-active');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+
             btn.onclick = () => {
                 const fone = "559191772809";
-                const texto = `Olá, Salvatore! Gostaria de ${tipo} o plano ${nome} por R$ ${valor}.`;
+                const texto = `Olá, Salvatore! Gostaria de ${tipo} o plano ${nome} por R$ ${preco}.`;
                 window.location.href = `https://wa.me/${fone}?text=${encodeURIComponent(texto)}`;
             };
         }
 
-        function fechar() { document.getElementById('modal-ui').style.display = 'none'; }
-        window.onclick = (e) => { if (e.target.id === 'modal-ui') fechar(); };
-
-        // Lógica do Chat
-        function toggleChat() {
-            const win = document.getElementById('chat-window');
-            win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+        function fechar() {
+            const modal = document.getElementById('modal-screen');
+            const content = document.getElementById('main-content');
+            modal.classList.remove('show');
+            content.classList.remove('blur-active');
+            setTimeout(() => modal.style.display = 'none', 500);
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            addMessage(text, 'user');
-            input.value = '';
-            
-            const typing = document.getElementById('typing-indicator');
-            typing.style.display = 'block';
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: text }] }],
-                        systemInstruction: {
-                            parts: [{ text: "Você é o 'Salvatore AI', assistente oficial da Salvatore Shop. Seu objetivo é ajudar clientes a escolher planos e dar suporte sobre o site. Nossos planos são: Fukase Mensal (R$ 5,00), Vitalício (R$ 25,00), Arquivos Fonte (R$ 50,00), e Semanais (R$ 1,25 a R$ 3,75). Seja direto, educado e use gírias leves de tecnologia se necessário. Se perguntarem algo fora da loja, diga que só pode ajudar com assuntos da Salvatore Shop. WhatsApp de suporte: 559191772809." }]
-                        }
-                    })
-                });
-
-                const data = await response.json();
-                const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, tive um problema na conexão. Pode repetir?";
-                addMessage(aiText, 'ia');
-            } catch (e) {
-                addMessage("Erro ao conectar com o servidor.", 'ia');
-            } finally {
-                typing.style.display = 'none';
-            }
-        }
-
-        function addMessage(text, side) {
-            const container = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.className = `msg msg-${side}`;
-            div.innerText = text;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        document.getElementById('chat-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
+        window.onclick = (e) => { if (e.target.id === 'modal-screen') fechar(); };
     </script>
 </body>
 </html>
