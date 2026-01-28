@@ -16,7 +16,7 @@
             --vermelho: #ff0000;
             --azul: #3b82f6;
             --verde: #22c55e;
-            --dark-glass: rgba(10, 10, 10, 0.9);
+            --dark-card: rgba(18, 18, 18, 0.95);
         }
 
         * {
@@ -31,20 +31,18 @@
             background-color: #000;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            min-height: 200vh;
+            min-height: 100vh;
             overflow-x: hidden;
-            transition: background 1s ease;
         }
 
-        /* --- SISTEMA DE BLUR DINÂMICO --- */
+        /* --- BLUR DINÂMICO --- */
         #main-content {
-            transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: filter, transform;
+            transition: filter 0.5s ease, transform 0.5s ease;
         }
 
         .blur-active {
-            filter: blur(15px) brightness(0.6);
-            transform: scale(0.97);
+            filter: blur(15px) brightness(0.5);
+            transform: scale(0.98);
             pointer-events: none;
         }
 
@@ -62,18 +60,11 @@
             height: 80vw;
             border-radius: 50%;
             filter: blur(130px);
-            opacity: 0.35;
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.3;
         }
 
         #luz-1 { top: -10%; left: -20%; background: var(--vermelho); }
-        #luz-2 { bottom: -10%; right: -15%; background: rgba(255, 0, 0, 0.2); }
-
-        body.tema-azul #luz-1 { background: var(--azul); }
-        body.tema-azul #luz-2 { background: rgba(59, 130, 246, 0.3); }
-
-        body.tema-verde #luz-1 { background: var(--verde); }
-        body.tema-verde #luz-2 { background: rgba(34, 197, 94, 0.3); }
+        #luz-2 { bottom: -10%; right: -15%; background: rgba(255, 0, 0, 0.1); }
 
         /* Pirulitos */
         .lollipop-rain {
@@ -83,7 +74,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
             overflow: hidden;
         }
 
@@ -98,31 +89,30 @@
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* Conteúdo */
+        /* Layout Cards */
         .page-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 4rem 1.2rem;
-            gap: 6rem;
-        }
-
-        .painel-vendas, .painel-sobre {
-            background: var(--dark-glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 45px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-            padding: 2.5rem 1.8rem;
+            padding: 4rem 1.5rem;
+            gap: 4rem;
             position: relative;
             z-index: 10;
         }
 
+        .card-container {
+            background: var(--dark-card);
+            border-radius: 40px;
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
         .logo-animada {
             font-family: 'Comfortaa', cursive;
-            font-size: clamp(2.2rem, 9vw, 3.2rem);
+            font-size: 2.5rem;
             text-align: center;
             background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
             background-size: 300% auto;
@@ -135,52 +125,105 @@
         @keyframes flow { to { background-position: 300% center; } }
 
         .item-clicavel {
-            position: relative;
-            background: #111;
-            margin-bottom: 1.2rem;
-            padding: 1.3rem;
-            border-radius: 22px;
+            background: #0d0d0d;
+            margin-bottom: 1rem;
+            padding: 1.2rem;
+            border-radius: 20px;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.03);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.02);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .item-clicavel:active { transform: scale(0.95); background: #181818; }
         .item-clicavel::before {
             content: '';
             position: absolute;
-            left: 0; top: 15%; bottom: 15%;
+            left: 0; top: 0; bottom: 0;
             width: 4px;
             background: var(--vermelho);
-            border-radius: 0 4px 4px 0;
-            transition: 0.8s;
         }
-        body.tema-azul .item-clicavel::before { background: var(--azul); }
 
-        /* Seção Sobre */
-        .painel-sobre {
-            max-width: 600px;
+        .plano-semanal::before {
+            background: var(--azul) !important;
+        }
+
+        /* SOBRE MIM CENTRALIZADO */
+        .sobre-mim-card {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            gap: 2rem;
-        }
-
-        @media (max-width: 640px) {
-            .painel-sobre { flex-direction: column; text-align: center; }
+            text-align: center;
         }
 
         .foto-perfil {
-            width: 120px; height: 120px; border-radius: 50%;
-            object-fit: cover; border: 4px solid var(--verde);
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
-            flex-shrink: 0;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--verde);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
         }
 
-        /* Modal Customizado */
+        /* Botão Flutuante Música (Esquerda) */
+        .btn-music-float {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            background: rgba(255, 0, 0, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            border: 2px solid white;
+            transition: 0.3s;
+        }
+        
+        .btn-music-float:hover { transform: scale(1.1); }
+        .playing { animation: pulse-red 2s infinite; }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        /* Botão Termos (Direita) */
+        .btn-termos-float {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* Player YouTube Invisível */
+        #youtube-player {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Modais */
         .ui-modal {
             display: none;
             position: fixed;
@@ -189,42 +232,49 @@
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.4);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
 
         .modal-box {
-            background: #080808;
-            border: 1px solid #222;
-            padding: 2.8rem 2rem;
-            border-radius: 38px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 2.5rem 2rem;
+            border-radius: 35px;
             text-align: center;
             width: 100%;
-            max-width: 380px;
-            transform: translateY(40px) scale(0.9);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 50px 100px rgba(0,0,0,1);
+            max-width: 400px;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
         }
 
         .ui-modal.show { display: flex; opacity: 1; }
-        .ui-modal.show .modal-box { transform: translateY(0) scale(1); }
+        .ui-modal.show .modal-box { transform: translateY(0); }
 
-        .btn-confirm {
-            background: var(--vermelho);
+        .btn-finalizar {
+            background: #ff0000;
             width: 100%;
             padding: 1.2rem;
-            border-radius: 18px;
+            border-radius: 20px;
             font-weight: 800;
+            font-size: 1.1rem;
             text-transform: uppercase;
             margin-top: 2rem;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
         }
-        body.tema-azul .btn-confirm { background: var(--azul); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
+
+        .termos-table {
+            width: 100%;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        .termos-table td { padding: 8px 0; border-bottom: 1px solid #111; }
     </style>
 </head>
 <body>
+
+    <!-- API do YouTube -->
+    <div id="youtube-player"></div>
 
     <div class="aura-fixa">
         <div class="luz-espelhada" id="luz-1"></div>
@@ -233,70 +283,82 @@
 
     <div class="lollipop-rain" id="candy-container"></div>
 
+    <!-- Botão de Música -->
+    <div class="btn-music-float" id="music-trigger" onclick="toggleMusic()">
+        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
+
+    <!-- Botão Termos -->
+    <div class="btn-termos-float" onclick="abrirTermos()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        <span class="text-[11px] font-bold uppercase tracking-widest">Termos de Vendas</span>
+    </div>
+
     <div id="main-content">
         <div class="page-wrapper">
             
             <!-- PLANOS MENSAIS -->
-            <section class="painel-vendas">
-                <h1 class="logo-animada">SALVATORE SHOP</h1>
-                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[4px] mb-8 font-bold">Acesso Premium</p>
+            <section class="card-container">
+                <h1 class="logo-animada text-center">SALVATORE SHOP</h1>
+                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[5px] mb-10 font-bold">Planos Mensais</p>
 
                 <div class="item-clicavel" onclick="pedir('Fukase Mensal', '5,00', 'alugar')">
-                    <div class="pr-4">
+                    <div>
                         <span class="block font-bold text-white text-lg">Acesso 30 Dias</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Fukase Bot</span>
                     </div>
-                    <div class="text-xl font-bold text-white">R$ 5,00</div>
+                    <div class="text-xl font-bold">R$ 5,00</div>
                 </div>
 
                 <div class="item-clicavel" onclick="pedir('Plano Vitalício', '25,00', 'comprar')">
-                    <div class="pr-4">
+                    <div>
                         <span class="block font-bold text-white text-lg">Acesso Vitalício</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Pagamento Único</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Pagamento Único</span>
                     </div>
-                    <div class="text-xl font-bold text-white">R$ 25,00</div>
+                    <div class="text-xl font-bold">R$ 25,00</div>
                 </div>
 
                 <div class="item-clicavel" onclick="pedir('Arquivos do Bot', '50,00', 'comprar')">
-                    <div class="pr-4">
+                    <div>
                         <span class="block font-bold text-white text-lg">Arquivos Fonte</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Código Completo</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Código Completo</span>
                     </div>
-                    <div class="text-xl font-bold text-white">R$ 50,00</div>
+                    <div class="text-xl font-bold">R$ 50,00</div>
                 </div>
             </section>
 
             <!-- PLANOS SEMANAIS -->
-            <section class="painel-vendas">
-                <h1 class="logo-animada">PLANOS SEMANAIS</h1>
-                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[4px] mb-8 font-bold">Curta Duração</p>
+            <section class="card-container">
+                <h1 class="logo-animada text-center">PLANOS SEMANAIS</h1>
+                <p class="text-center text-[10px] text-zinc-500 uppercase tracking-[5px] mb-10 font-bold">Acesso Rápido</p>
 
-                <div class="item-clicavel" onclick="pedir('Semanal (01)', '1,25', 'alugar')">
-                    <div class="pr-4">
+                <div class="item-clicavel plano-semanal" onclick="pedir('Semanal (01)', '1,25', 'alugar')">
+                    <div>
                         <span class="block font-bold text-white text-lg">01 Semana</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Fukase Bot</span>
                     </div>
                     <div class="text-xl font-bold text-blue-500">R$ 1,25</div>
                 </div>
 
-                <div class="item-clicavel" onclick="pedir('Semanal (02)', '2,50', 'alugar')">
-                    <div class="pr-4">
+                <div class="item-clicavel plano-semanal" onclick="pedir('Semanal (02)', '2,50', 'alugar')">
+                    <div>
                         <span class="block font-bold text-white text-lg">02 Semanas</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Fukase Bot</span>
                     </div>
                     <div class="text-xl font-bold text-blue-500">R$ 2,50</div>
                 </div>
 
-                <div class="item-clicavel" onclick="pedir('Semanal (03)', '3,75', 'alugar')">
-                    <div class="pr-4">
+                <div class="item-clicavel plano-semanal" onclick="pedir('Semanal (03)', '3,75', 'alugar')">
+                    <div>
                         <span class="block font-bold text-white text-lg">03 Semanas</span>
-                        <span class="text-[11px] text-zinc-500 uppercase font-semibold">Fukase Bot</span>
+                        <span class="text-[10px] text-zinc-500 uppercase">Fukase Bot</span>
                     </div>
                     <div class="text-xl font-bold text-blue-500">R$ 3,75</div>
                 </div>
             </section>
 
-            <!-- SOBRE -->
+            <!-- SOBRE O DONO DO SITE -->
             <section class="painel-sobre">
                 <img src="https://raw.githubusercontent.com/nazuninha/uploads/main/fotos/1769232164537_0f4tm7.jpg" alt="Salvatore" class="foto-perfil" onerror="this.src='https://ui-avatars.com/api/?name=Salvatore&background=22c55e&color=fff'">
                 <div class="bio-texto">
@@ -307,23 +369,91 @@
                 <p class="mt-3">
                     Salvatore é um rapaz muito admirado pelo seu acolhimento e empatia pelos usuários do Fukase-bot. Salvatore surgiu aleatoriamente em fevereiro de 2025 com o Fukase, garantindo segurança, interação, brincadeiras e conforto para os grupos com seu bot que hoje em dia é reconhecido nacionalmente na comunidade do WhatsApp.
                 </p>
-                </div>
             </section>
+
         </div>
     </div>
 
-    <!-- Modal UI -->
-    <div class="ui-modal" id="modal-screen">
+    <!-- Modais -->
+    <div class="ui-modal" id="modal-pedido">
         <div class="modal-box">
-            <h3 class="text-xl font-bold text-white uppercase mb-2">Confirmar Pedido</h3>
-            <p id="detalhe-pedido" class="text-zinc-500 text-sm mb-6 leading-loose"></p>
-            <button class="btn-confirm text-white" id="confirm-wa">Finalizar no WhatsApp</button>
-            <button class="mt-6 text-[10px] text-zinc-700 uppercase tracking-widest block mx-auto font-bold" onclick="fechar()">Cancelar</button>
+            <h3 class="text-lg font-bold uppercase tracking-widest mb-2">Confirmar Pedido</h3>
+            <div id="info-pedido" class="text-zinc-500 text-sm mb-8"></div>
+            <button class="btn-finalizar text-white" id="confirm-btn">Ir para o WhatsApp</button>
+            <button class="mt-6 text-[10px] text-zinc-600 uppercase font-bold tracking-widest" onclick="fechar()">Voltar</button>
         </div>
     </div>
+
+    <div class="ui-modal" id="modal-termos">
+        <div class="modal-box text-left">
+            <h3 class="text-lg font-bold uppercase text-center mb-4">Diretrizes da Loja</h3>
+            <p class="text-xs text-zinc-400 mb-6">Seja bem vindo na página de diretrizes do site. Nosso site tem planos ótimos e em contas. Fornecemos um sistema em conta com estabilidade rápida e segura.</p>
+            
+            <p class="font-bold text-white text-sm uppercase">Termos de Compra</p>
+            <p class="text-[10px] text-zinc-500 mb-4">Tenha consciência da compra que está fazendo, pois não trabalhamos com devolução, a menos que o produto não seja entregado de forma correta.</p>
+
+            <table class="termos-table text-xs text-zinc-300">
+                <tr><td>Reembolso</td><td class="text-right">🚫</td></tr>
+                <tr><td>Confiável</td><td class="text-right">✅</td></tr>
+                <tr><td>Rápido</td><td class="text-right">✅</td></tr>
+                <tr><td>Suporte</td><td class="text-right">✅</td></tr>
+                <tr><td>Trabalho ilegal</td><td class="text-right">🚫</td></tr>
+            </table>
+
+            <button class="mt-8 w-full py-3 bg-zinc-900 rounded-xl text-[10px] font-bold uppercase" onclick="fecharTermos()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scripts YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // Lógica de Pirulitos
+        // Configuração Player Música
+        let player;
+        let isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'WpYeekQkAdc', // ID da música G.U.Y. - Lady Gaga
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'WpYeekQkAdc'
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("Música pronta");
+        }
+
+        function toggleMusic() {
+            const musicBtn = document.getElementById('music-trigger');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+
+            if (!isPlaying) {
+                player.playVideo();
+                musicBtn.classList.add('playing');
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                isPlaying = true;
+            } else {
+                player.pauseVideo();
+                musicBtn.classList.remove('playing');
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                isPlaying = false;
+            }
+        }
+
+        // Pirulitos
         function createLollipop() {
             const container = document.getElementById('candy-container');
             const pop = document.createElement('div');
@@ -335,46 +465,53 @@
             container.appendChild(pop);
             setTimeout(() => pop.remove(), duration * 1000);
         }
-        setInterval(createLollipop, 600);
+        setInterval(createLollipop, 800);
 
-        // Scroll Cores
-        window.onscroll = () => {
-            const scrollPos = window.scrollY;
-            const h = window.innerHeight;
-            if (scrollPos > h * 1.2) document.body.className = 'tema-verde';
-            else if (scrollPos > h * 0.4) document.body.className = 'tema-azul';
-            else document.body.className = '';
-        };
-
-        // Funções do Modal
-        function pedir(nome, preco, tipo) {
-            const modal = document.getElementById('modal-screen');
+        // Modais Pedidos
+        function pedir(nome, valor, tipo) {
+            const m = document.getElementById('modal-pedido');
+            const info = document.getElementById('info-pedido');
             const content = document.getElementById('main-content');
-            const info = document.getElementById('detalhe-pedido');
-            const btn = document.getElementById('confirm-wa');
-
-            info.innerHTML = `Você escolheu: <strong class="text-white">${nome}</strong><br>Valor total: <strong class="text-white">R$ ${preco}</strong>`;
             
+            info.innerHTML = `Plano: <b>${nome}</b><br>Valor: <b>R$ ${valor}</b>`;
             content.classList.add('blur-active');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
+            m.style.display = 'flex';
+            setTimeout(() => m.classList.add('show'), 10);
 
-            btn.onclick = () => {
-                const fone = "559191772809";
-                const texto = `Olá, Salvatore! Gostaria de ${tipo} o plano ${nome} por R$ ${preco}.`;
-                window.location.href = `https://wa.me/${fone}?text=${encodeURIComponent(texto)}`;
+            document.getElementById('confirm-btn').onclick = () => {
+                const text = `Olá, Salvatore! Gostaria de ${tipo} o plano ${nome} por R$ ${valor}.`;
+                window.location.href = `https://wa.me/559191772809?text=${encodeURIComponent(text)}`;
             };
         }
 
         function fechar() {
-            const modal = document.getElementById('modal-screen');
+            const m = document.getElementById('modal-pedido');
             const content = document.getElementById('main-content');
-            modal.classList.remove('show');
+            m.classList.remove('show');
             content.classList.remove('blur-active');
-            setTimeout(() => modal.style.display = 'none', 500);
+            setTimeout(() => m.style.display = 'none', 400);
         }
 
-        window.onclick = (e) => { if (e.target.id === 'modal-screen') fechar(); };
+        function abrirTermos() {
+            const m = document.getElementById('modal-termos');
+            const content = document.getElementById('main-content');
+            content.classList.add('blur-active');
+            m.style.display = 'flex';
+            setTimeout(() => m.classList.add('show'), 10);
+        }
+
+        function fecharTermos() {
+            const m = document.getElementById('modal-termos');
+            const content = document.getElementById('main-content');
+            m.classList.remove('show');
+            content.classList.remove('blur-active');
+            setTimeout(() => m.style.display = 'none', 400);
+        }
+
+        window.onclick = (e) => {
+            if(e.target.id === 'modal-pedido') fechar();
+            if(e.target.id === 'modal-termos') fecharTermos();
+        };
     </script>
 </body>
 </html>
