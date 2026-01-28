@@ -174,27 +174,27 @@
             position: fixed;
             bottom: 30px;
             left: 20px;
-            background: rgba(255, 0, 0, 0.8);
-            width: 50px;
-            height: 50px;
+            background: #8b0000; /* Vermelho ARTPOP */
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-            border: 2px solid white;
-            transition: 0.3s;
+            box-shadow: 0 0 25px rgba(139, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .btn-music-float:hover { transform: scale(1.1); }
-        .playing { animation: pulse-red 2s infinite; }
+        .btn-music-float:hover { transform: scale(1.15); }
+        .playing { animation: pulse-artpop 2s infinite; }
 
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        @keyframes pulse-artpop {
+            0% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(139, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0); }
         }
 
         /* Botão Termos (Direita) */
@@ -221,6 +221,7 @@
             height: 1px;
             opacity: 0;
             pointer-events: none;
+            top: -100px;
         }
 
         /* Modais */
@@ -273,7 +274,7 @@
 </head>
 <body>
 
-    <!-- API do YouTube -->
+    <!-- Iframe do YouTube com G.U.Y. (ID: PNu_-G8f6n4) -->
     <div id="youtube-player"></div>
 
     <div class="aura-fixa">
@@ -360,13 +361,10 @@
 
             <!-- SOBRE MIM -->
             <section class="card-container sobre-mim-card">
-                <img src="https://raw.githubusercontent.com/nazuninha/uploads/main/fotos/1769232164537_0f4tm7.jpg" alt="Salvatore" class="foto-perfil" onerror="this.src='https://ui-avatars.com/api/?name=SA&background=22c55e&color=fff&size=150'">
-                <h2 class="text-2xl font-bold mb-4">Walacy Salvatore</h2>
-                <p>
-                    Walacy, conhecido como <strong>“Salvatore”</strong>, é um programador pouco conhecido na indústria de programação, mas o mesmo tem grandes projetos como o famoso <strong>"Fukase-bot"</strong>. O projeto em si é um bot de WhatsApp muito popular entre os jovens entre 12 a 17 anos, com mais de <strong>4000 usuários</strong> e presente em mais de 60 grupos.
-                </p>
-                <p class="mt-3">
-                    Salvatore é um rapaz muito admirado pelo seu acolhimento e empatia pelos usuários do Fukase-bot. Salvatore surgiu aleatoriamente em fevereiro de 2025 com o Fukase, garantindo segurança, interação, brincadeiras e conforto para os grupos com seu bot que hoje em dia é reconhecido nacionalmente na comunidade do WhatsApp.
+                <img src="2971501.jpg" alt="Salvatore" class="foto-perfil" onerror="this.src='https://ui-avatars.com/api/?name=SA&background=22c55e&color=fff&size=150'">
+                <h2 class="text-2xl font-bold mb-4">Sobre Mim</h2>
+                <p class="text-sm text-zinc-400 leading-relaxed max-w-sm">
+                    Walacy, o <strong>“Salvatore”</strong>, é o criador do <strong>Fukase-bot</strong>. Com milhares de usuários, ele é referência em segurança e diversão no WhatsApp nacional.
                 </p>
             </section>
 
@@ -407,7 +405,6 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // Configuração Player Música
         let player;
         let isPlaying = false;
 
@@ -415,12 +412,14 @@
             player = new YT.Player('youtube-player', {
                 height: '0',
                 width: '0',
-                videoId: 'WpYeekQkAdc', // ID da música G.U.Y. - Lady Gaga
+                videoId: 'PNu_-G8f6n4', // ID oficial de G.U.Y. - Lady Gaga
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'WpYeekQkAdc'
+                    'playlist': 'PNu_-G8f6n4',
+                    'modestbranding': 1,
+                    'rel': 0
                 },
                 events: {
                     'onReady': onPlayerReady
@@ -429,7 +428,7 @@
         }
 
         function onPlayerReady(event) {
-            console.log("Música pronta");
+            console.log("ARTPOP pronto.");
         }
 
         function toggleMusic() {
@@ -515,4 +514,3 @@
 </body>
 </html>
 
-                
