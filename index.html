@@ -1,284 +1,418 @@
-
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COLUMBINA SHOP</title>
+    <title>Fukase Bot - WhatsApp</title>
+    
+    <!-- Importando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Configurações visuais e paleta de cores personalizada -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            900: '#7f1d1d',
+                            950: '#450a0a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonte Google Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca de Animações AOS (Animate on Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Biblioteca de Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-
-        body {
-            background-color: #050505;
-            color: #d1d5db;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .bg-glow {
-            position: fixed;
-            top: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: rgba(139, 92, 246, 0.1);
-            filter: blur(120px);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .tab-content {
+        /* Ocultar barra de rolagem lateral mantendo a rolagem fluida */
+        .no-scrollbar::-webkit-scrollbar {
             display: none;
-            animation: slideUp 0.6s ease forwards;
         }
-
-        .tab-content.active {
-            display: block;
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .sidebar {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateX(100%);
-        }
-
-        .sidebar.active {
-            transform: translateX(0);
+        
+        /* Transições suaves globais para elementos interativos e temas */
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 font-sans selection:bg-brand-500 selection:text-white">
 
-    <div class="bg-glow"></div>
+    <!-- Barra de Navegação Superior -->
+    <nav class="fixed w-full z-50 top-0 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo com a foto do bot Fukase -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-brand-500 shadow-lg shadow-brand-500/30 flex items-center justify-center bg-brand-500">
+                        <img src="https://upload.tohka.com.br/storage/iKTTaoUeNdiM0A6AcmhC.jpg" alt="Fukase Bot" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <span class="font-bold text-xl tracking-tight">Fukase</span>
+                </div>
 
-    <!-- Barra de Navegação -->
-    <nav class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl z-50 px-6 py-6 flex justify-between items-center">
-        <div class="text-sm font-black tracking-[0.2em] text-white">C.SHOP</div>
-        <button onclick="toggleSidebar(true)" class="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full flex items-center gap-2 transition-all active:scale-95 text-[10px] font-bold uppercase tracking-widest text-white">
-            Menu <i class="fas fa-cog text-purple-500"></i>
-        </button>
+                <!-- Menu de Navegação (Desktop) -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="font-medium hover:text-brand-500 transition-colors">Início</a>
+                    <a href="#funcionalidades" class="font-medium hover:text-brand-500 transition-colors">Funcionalidades</a>
+                    <a href="#planos" class="font-medium hover:text-brand-500 transition-colors">Planos</a>
+                    <a href="#comunidade" class="font-medium hover:text-brand-500 transition-colors">Comunidade</a>
+                </div>
+
+                <!-- Botões de Ação Rápidas -->
+                <div class="flex items-center gap-4">
+                    <!-- Botão para alternar entre tema claro e escuro -->
+                    <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors cursor-pointer" title="Alternar Tema">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden text-orange-500"></i>
+                    </button>
+
+                    <!-- Botão principal de Aluguel -->
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20Fukase!" target="_blank" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-semibold rounded-full text-white bg-brand-600 hover:bg-brand-700 shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 transition-all hover:-translate-y-0.5">
+                        Alugar Fukase
+                    </a>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <!-- Menu Lateral (Sidebar) -->
-    <div id="sidebar-overlay" class="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500"></div>
-    <aside id="sidebar" class="sidebar fixed right-0 top-0 h-full w-full max-w-[300px] bg-[#0a0a0c] border-l border-white/5 z-[70] p-10">
-        <div class="flex justify-end mb-12">
-            <button onclick="toggleSidebar(false)" class="text-gray-400 hover:text-white transition">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-        </div>
-        <div class="space-y-3">
-            <button onclick="openModal('modalAluguel')" class="w-full flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-purple-500/10 transition-all text-sm font-medium group">
-                <span>Infos de Aluguel</span>
-                <i class="fas fa-credit-card text-purple-500 group-hover:scale-110 transition-transform"></i>
-            </button>
-            <button onclick="openModal('modalDev')" class="w-full flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-purple-500/10 transition-all text-sm font-medium group">
-                <span>Desenvolvedor</span>
-                <i class="fas fa-code text-purple-500 group-hover:scale-110 transition-transform"></i>
-            </button>
-        </div>
-    </aside>
-
-    <!-- Conteúdo Principal -->
-    <main class="relative z-10 pt-32 pb-12 px-6 flex flex-col items-center max-w-5xl mx-auto">
-        
-        <header class="text-center mb-12">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-6">
-                <span class="w-1.5 h-1.5 bg-purple-500 rounded-full shadow-[0_0_8px_#8b5cf6]"></span>
-                Interface Estável
-            </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 italic">
-                COLUMBINA <span class="text-purple-500">SHOP</span>
-            </h1>
-            <p class="text-gray-500 text-sm md:text-base max-w-md mx-auto leading-relaxed font-light">
-                Automação premium para WhatsApp. Simplicidade, rapidez e segurança num só bot.
-            </p>
-        </header>
-
-        <!-- Seleção de Abas -->
-        <div class="flex bg-[#111114] p-1 rounded-2xl border border-white/5 mb-12">
-            <button onclick="switchTab(this, 'inicio')" class="tab-btn px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-purple-600 text-white shadow-lg shadow-purple-900/20">Início</button>
-            <button onclick="switchTab(this, 'recursos')" class="tab-btn px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 text-gray-500 hover:text-gray-300">Recursos</button>
-            <button onclick="switchTab(this, 'termos')" class="tab-btn px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 text-gray-500 hover:text-gray-300">Termos</button>
-        </div>
-
-        <!-- Container das Abas -->
-        <section class="w-full bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl">
-            
-            <div id="inicio" class="tab-content active">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-4">Eficiência Máxima.</h2>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                            A Columbina Bot foi desenhada para grupos que não podem parar. Gestão de membros, filtros inteligentes e diversão garantida.
-                        </p>
-                        <div class="flex gap-4">
-                            <button class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl text-xs font-bold transition-all flex items-center gap-2 group">
-                                ADQUIRIR <i class="fas fa-chevron-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
-                            </button>
-                            <button class="border border-white/10 hover:bg-white/5 px-6 py-3 rounded-xl text-xs font-bold transition-all text-white">
-                                COMANDOS
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex justify-center">
-                        <div class="w-40 h-40 bg-gradient-to-tr from-purple-900/20 to-purple-600/10 rounded-3xl border border-purple-500/20 flex items-center justify-center relative group">
-                            <i class="fas fa-robot text-5xl text-purple-500 relative z-10 group-hover:scale-110 transition-transform"></i>
-                        </div>
-                    </div>
+    <!-- Seção de Apresentação (Hero) -->
+    <section id="inicio" class="pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center max-w-3xl mx-auto" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-semibold text-sm mb-6 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                    O Bot Premium para o seu WhatsApp
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold tracking-tight mb-8">
+                    Moderação e diversão <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-red-800 dark:to-red-400">
+                        em um só lugar.
+                    </span>
+                </h1>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
+                    Fukase não é apenas um bot, é a solução definitiva para o seu grupo de WhatsApp. Jogos, administração, diversão e muita interatividade por um preço acessível.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#planos" class="inline-flex items-center justify-center px-8 py-3.5 border border-transparent text-base font-bold rounded-full text-white bg-brand-600 hover:bg-brand-700 shadow-xl shadow-brand-500/30 transition-all hover:-translate-y-1">
+                        Ver Planos
+                    </a>
+                    <a href="#comunidade" class="inline-flex items-center justify-center px-8 py-3.5 border-2 border-gray-300 dark:border-gray-700 hover:border-brand-500 dark:hover:border-brand-500 text-base font-bold rounded-full bg-transparent hover:bg-gray-50 dark:hover:bg-gray-900 transition-all">
+                        Nossa Comunidade
+                    </a>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="recursos" class="tab-content">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 transition-all">
-                        <i class="fas fa-shield-alt text-purple-500 text-xl mb-4"></i>
-                        <h3 class="text-lg font-bold text-white mb-2">Segurança</h3>
-                        <p class="text-xs text-gray-500 leading-relaxed">Anti-link e banimento automático configurável.</p>
-                    </div>
-                    <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 transition-all">
-                        <i class="fas fa-bolt text-purple-500 text-xl mb-4"></i>
-                        <h3 class="text-lg font-bold text-white mb-2">Velocidade</h3>
-                        <p class="text-xs text-gray-500 leading-relaxed">Resposta instantânea em todos os servidores.</p>
-                    </div>
-                    <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 transition-all">
-                        <i class="fas fa-th-large text-purple-500 text-xl mb-4"></i>
-                        <h3 class="text-lg font-bold text-white mb-2">Completo</h3>
-                        <p class="text-xs text-gray-500 leading-relaxed">Sistema de economia, jogos e ferramentas.</p>
-                    </div>
-                </div>
+    <!-- Seção de Funcionalidades do Bot -->
+    <section id="funcionalidades" class="py-20 bg-gray-100/50 dark:bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Por que escolher o Fukase?</h2>
+                <p class="text-gray-600 dark:text-gray-400">Estruturado para trazer o melhor desempenho e interatividade.</p>
             </div>
 
-            <div id="termos" class="tab-content">
-                <div class="max-w-2xl mx-auto text-center py-8">
-                    <h2 class="text-xl font-bold text-white mb-4">Política de Uso</h2>
-                    <p class="text-sm text-gray-500 leading-relaxed italic">
-                        Ao usar a Columbina, respeite os limites do WhatsApp. O abuso da ferramenta pode levar à suspensão do serviço no seu grupo.
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Recurso 1: Moderação -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 hover:border-brand-500/50 dark:hover:border-brand-500/50 transition-all hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-brand-100 dark:bg-brand-900/40 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Moderação Avançada</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Proteja seu grupo de spans, links indesejados e mantenha a ordem com comandos rápidos e precisos.</p>
+                </div>
+
+                <!-- Recurso 2: Diversão -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 hover:border-brand-500/50 dark:hover:border-brand-500/50 transition-all hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-brand-100 dark:bg-brand-900/40 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="gamepad-2" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Diversão Garantida</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Dezenas de comandos de jogos, economia, criação de figurinhas e interação para manter seu grupo sempre ativo e engajado.</p>
+                </div>
+
+                <!-- Recurso 3: Desempenho -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 hover:border-brand-500/50 dark:hover:border-brand-500/50 transition-all hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-brand-100 dark:bg-brand-900/40 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Rápido e Estável</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Hospedado em servidores dedicados, o Fukase responde instantaneamente, sem travamentos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Planos de Assinatura -->
+    <section id="planos" class="py-20 relative">
+        <div class="absolute inset-0 bg-brand-600 dark:bg-brand-900/20 skew-y-3 transform origin-bottom-right -z-10 opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-brand-600 dark:text-brand-400 font-bold tracking-wider uppercase text-sm">Premium</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Planos de Assinatura</h2>
+                <p class="text-gray-600 dark:text-gray-400">O Fukase oferece qualidade premium. Escolha o tempo de aluguel ideal para o seu grupo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Plano de 1 Mês -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-gray-100 dark:border-gray-800 hover:border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-sm" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-2xl font-bold mb-2">1 Mês</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Ideal para testar no seu grupo.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 7</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%201%20mês%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-gray-100 hover:bg-brand-600 hover:text-white dark:bg-gray-800 dark:hover:bg-brand-600 text-center font-bold rounded-xl transition-colors">Assinar Agora</a>
+                </div>
+
+                <!-- Plano de 2 Meses (Destaque Mais Popular) -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-xl shadow-brand-500/10" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">MAIS POPULAR</div>
+                    <h3 class="text-2xl font-bold mb-2">2 Meses</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Tranquilidade por mais tempo.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 14</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%202%20meses%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white text-center font-bold rounded-xl transition-colors shadow-lg shadow-brand-500/30">Assinar Agora</a>
+                </div>
+
+                <!-- Plano de 3 Meses -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-gray-100 dark:border-gray-800 hover:border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-sm" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-2xl font-bold mb-2">3 Meses</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Um trimestre de diversão.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 21</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%203%20meses%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-gray-100 hover:bg-brand-600 hover:text-white dark:bg-gray-800 dark:hover:bg-brand-600 text-center font-bold rounded-xl transition-colors">Assinar Agora</a>
+                </div>
+                
+                <!-- Plano de 4 Meses -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-gray-100 dark:border-gray-800 hover:border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-sm" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-2xl font-bold mb-2">4 Meses</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Mais tempo, mais interatividade.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 28</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%204%20meses%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-gray-100 hover:bg-brand-600 hover:text-white dark:bg-gray-800 dark:hover:bg-brand-600 text-center font-bold rounded-xl transition-colors">Assinar Agora</a>
+                </div>
+
+                <!-- Plano de 5 Meses -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-gray-100 dark:border-gray-800 hover:border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-sm" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-2">5 Meses</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Quase meio ano de moderação.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 35</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%205%20meses%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-gray-100 hover:bg-brand-600 hover:text-white dark:bg-gray-800 dark:hover:bg-brand-600 text-center font-bold rounded-xl transition-colors">Assinar Agora</a>
+                </div>
+
+                <!-- Plano de 6 Meses -->
+                <div class="bg-white dark:bg-gray-900 rounded-3xl p-8 border-2 border-gray-100 dark:border-gray-800 hover:border-brand-500 relative transition-all hover:-translate-y-2 flex flex-col shadow-sm" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-2xl font-bold mb-2">6 Meses</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Meio ano de sistema garantido!</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-brand-600 dark:text-brand-500">R$ 42</span><span class="text-gray-500">,00</span>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-1">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Acesso a todos comandos</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Moderação 24/7</span></li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="text-brand-500 w-5 h-5"></i><span class="text-gray-700 dark:text-gray-300">Suporte prioritário</span></li>
+                    </ul>
+                    <a href="https://wa.me/5531910141168?text=Olá,%20gostaria%20de%20assinar%20o%20plano%20de%206%20meses%20do%20Fukase!" target="_blank" class="block w-full py-3 px-4 bg-gray-100 hover:bg-brand-600 hover:text-white dark:bg-gray-800 dark:hover:bg-brand-600 text-center font-bold rounded-xl transition-colors">Assinar Agora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Comunidade (Grupos e Canal do WhatsApp) -->
+    <section id="comunidade" class="py-20 bg-gray-100/50 dark:bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6" data-aos="fade-right">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Nossa Comunidade</h2>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-xl">
+                        Participe dos nossos grupos e canais oficiais. Interaja com o Fukase, conheça novas pessoas e fique por dentro das novidades.
                     </p>
                 </div>
+                <div class="flex gap-2">
+                    <span class="px-4 py-2 bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 font-semibold rounded-full text-sm">
+                        2 Grupos
+                    </span>
+                    <span class="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-full text-sm">
+                        1 Canal
+                    </span>
+                </div>
             </div>
 
-        </section>
+            <!-- Grade de Grupos e Canal -->
+            <div class="flex overflow-x-auto gap-6 pb-8 no-scrollbar snap-x" data-aos="fade-up" data-aos-delay="200">
+                
+                <!-- Grupo 1: Angel chat -->
+                <div class="min-w-[300px] md:min-w-[350px] bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-800 snap-center group">
+                    <div class="h-32 overflow-hidden relative">
+                        <img src="https://upload.tohka.com.br/storage/EKZlejhtMbvi3A2SRtOT.jpg" alt="Angel chat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="users" class="w-3 h-3"></i> Grupo
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Angel chat 🍭</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-2">Venha fazer parte da nossa comunidade, interagir e se divertir com o Fukase!</p>
+                        <a href="https://chat.whatsapp.com/L3jTKmcQttqFrlaHnTnsHg?s=cl&p=a&mlu=4" target="_blank" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-brand-50 text-gray-900 dark:bg-gray-800 dark:text-white dark:hover:bg-brand-900/30 rounded-xl font-semibold transition-colors">
+                            Entrar no Grupo
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
 
-        <footer class="mt-16 text-[10px] text-gray-600 font-medium tracking-[0.3em] uppercase">
-            Columbina Shop &copy; 2026
-        </footer>
-    </main>
+                <!-- Grupo 2: Doceria do Fukase -->
+                <div class="min-w-[300px] md:min-w-[350px] bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-800 snap-center group">
+                    <div class="h-32 overflow-hidden relative">
+                        <img src="https://upload.tohka.com.br/storage/h7GihWWjPVZbvqTXYPDw.jpg" alt="Doceria do Fukase" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-brand-500/80 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="shopping-bag" class="w-3 h-3"></i> Aluguel
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Doceria do Fukase 🍭</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-2">Chat oficial para tirar dúvidas e realizar o aluguel do bot para o seu próprio grupo.</p>
+                        <a href="https://chat.whatsapp.com/G8iQjkD5peJB9zKhuJcyVy?s=cl&p=a&mlu=4" target="_blank" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-brand-50 text-gray-900 dark:bg-gray-800 dark:text-white dark:hover:bg-brand-900/30 rounded-xl font-semibold transition-colors">
+                            Entrar no Grupo
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
 
-    <!-- Modais -->
-    <div id="modalAluguel" class="modal" onclick="closeModalOnDim(event, 'modalAluguel')">
-        <div class="modal-content bg-[#0f0f12] w-full max-w-md rounded-3xl border border-purple-500/20 p-8 shadow-2xl mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-purple-400 tracking-tight">Planos de Aluguel</h3>
-                <button onclick="closeModal('modalAluguel')" class="text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
+                <!-- Canal: Angel | Channel -->
+                <div class="min-w-[300px] md:min-w-[350px] bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm border border-brand-200 dark:border-brand-900/50 snap-center group">
+                    <div class="h-32 overflow-hidden relative">
+                        <img src="https://upload.tohka.com.br/storage/9BB2hGc4z5UP2pGy5KLL.jpg" alt="Angel Channel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="bell" class="w-3 h-3"></i> Canal Oficial
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Angel | Channel 🕊️</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-2">Siga nosso canal para receber as últimas atualizações, avisos e novidades sobre o bot.</p>
+                        <a href="https://whatsapp.com/channel/0029VbD2lgW1yT2CsZ3CBJ1L" target="_blank" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-50 text-brand-700 dark:bg-brand-900/20 dark:text-brand-400 border border-brand-200 dark:border-brand-800 hover:bg-brand-100 dark:hover:bg-brand-900/40 rounded-xl font-semibold transition-colors">
+                            Seguir Canal
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
             </div>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center p-4 bg-white/[0.03] rounded-2xl border border-white/5">
-                    <span class="text-sm font-medium">Plano Mensal</span>
-                    <span class="text-purple-400 font-bold">R$ 5,00</span>
+        </div>
+    </section>
+
+    <!-- Rodapé (Footer) -->
+    <footer class="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-900 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-brand-500 shadow-sm flex items-center justify-center bg-brand-500">
+                        <img src="https://upload.tohka.com.br/storage/iKTTaoUeNdiM0A6AcmhC.jpg" alt="Fukase Bot" class="w-full h-full object-cover">
+                    </div>
+                    <span class="font-bold text-lg">Fukase Bot</span>
                 </div>
-                <div class="flex justify-between items-center p-4 bg-white/[0.03] rounded-2xl border border-white/5">
-                    <span class="text-sm font-medium">Plano Bimestral</span>
-                    <span class="text-purple-400 font-bold">R$ 10,00</span>
+                <div class="text-gray-500 dark:text-gray-400 text-sm text-center md:text-left">
+                    &copy; 2026 Fukase. Todos os direitos reservados. 
+                    <br class="md:hidden" />
+                    Um dos melhores bots atuais do mercado online!
                 </div>
-                <div class="flex justify-between items-center p-4 bg-purple-500/10 rounded-2xl border border-purple-500/30 relative">
-                    <span class="text-sm font-bold text-white">Plano Trimensal</span>
-                    <span class="text-purple-400 font-black">R$ 15,00</span>
-                    <span class="absolute -top-2 -right-2 bg-purple-500 text-[8px] px-2 py-0.5 rounded-full font-black text-white">POPULAR</span>
-                </div>
-                <div class="mt-6 p-4 rounded-xl bg-purple-500/5 border border-purple-500/10 text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Pagamento via PIX</p>
-                    <p class="text-xs text-purple-300">Ativação imediata após envio</p>
+                <div class="flex gap-4 text-gray-400">
+                    <a href="#" class="hover:text-brand-500 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="hover:text-brand-500 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <div id="modalDev" class="modal" onclick="closeModalOnDim(event, 'modalDev')">
-        <div class="modal-content bg-[#0f0f12] w-full max-w-md rounded-3xl border border-purple-500/20 p-8 shadow-2xl mx-4 text-center">
-            <div class="w-16 h-16 bg-purple-600/20 rounded-full mx-auto mb-4 flex items-center justify-center border border-purple-500/30">
-                <i class="fas fa-code text-2xl text-purple-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Columbina Systems</h3>
-            <p class="text-xs text-gray-500 leading-relaxed mb-6 italic">Focados em criar a melhor experiência de automação para a comunidade lusófona.</p>
-            <button onclick="closeModal('modalDev')" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-xs font-bold uppercase tracking-widest text-white">Fechar</button>
-        </div>
-    </div>
-
+    <!-- Scripts de Inicialização -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        function toggleSidebar(open) {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (open) {
-                sidebar.classList.add('active');
-                overlay.classList.add('opacity-100');
-                overlay.classList.remove('pointer-events-none');
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+
+        // Inicializa as animações suaves na rolagem de tela
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
+            easing: 'ease-out-cubic',
+        });
+
+        // Lógica de funcionamento do Tema Claro / Escuro (Dark Mode)
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // Mantém a preferência do usuário salva no navegador
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
             } else {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('opacity-100');
-                overlay.classList.add('pointer-events-none');
+                localStorage.theme = 'light';
             }
-        }
-
-        function switchTab(btn, tabId) {
-            // Atualizar botões
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-900/20');
-                b.classList.add('text-gray-500', 'hover:text-gray-300');
-            });
-            btn.classList.add('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-900/20');
-            btn.classList.remove('text-gray-500', 'hover:text-gray-300');
-
-            // Atualizar conteúdo
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-            toggleSidebar(false);
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        function closeModalOnDim(e, id) {
-            if (e.target.id === id) closeModal(id);
-        }
-
-        // Fechar sidebar ao clicar no overlay
-        document.getElementById('sidebar-overlay').onclick = () => toggleSidebar(false);
+        });
     </script>
 </body>
 </html>
-
-```
